@@ -1,106 +1,107 @@
 <div align="center">
-  <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2659&auto=format&fit=crop" alt="Curator Banner" width="100%" style="border-radius:15px; margin-bottom: 20px;">
+  <img src="https://images.unsplash.com/photo-1574267432553-4b4628081c31?q=80&w=2662&auto=format&fit=crop" alt="Curator Banner" width="100%" style="border-radius:24px; margin-bottom: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
   
-  # 📽️ Curator Media Server
+  # 📽️ Curator Media Server v2.0
+  ### *The Ultimate Emby-Clone for Personal Cloud Streaming*
 
-  Un media server moderno, responsivo y ultra veloz inspirado en las grandes plataformas de streaming. Anteriormente conocido como "GNU Free Player", ahora renace en NodeJS con una estética premium.
+  [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+  [![Node.js](https://img.shields.io/badge/Node.js-v20_LTS-339933.svg?style=for-the-badge&logo=nodedotjs)](https://nodejs.org/)
+  [![SQLite](https://img.shields.io/badge/Database-SQLite3-003B57.svg?style=for-the-badge&logo=sqlite)](https://www.sqlite.org/)
+  [![PWA](https://img.shields.io/badge/PWA-Ready-5B8CFF.svg?style=for-the-badge&logo=pwa)](https://web.dev/progressive-web-apps/)
 
-  ## 🚀 Instalación Automática (Estilo CasaOS)
-
-  Instala, configura y levanta el servidor completo con un solo comando en tu terminal de Ubuntu/Debian:
-
-  ```bash
-  curl -fsSL https://raw.githubusercontent.com/pepitozoe79-lgtm/MyMediaServer/main/install.sh | sudo bash
-  ```
-
-  Una vez que termine, te dirá tu IP, puerto y clave maestra en pantalla. ¡Así de fácil!
-
-  ## 🗑️ Desinstalación Rápida
-
-  Si alguna vez decides remover todo el ecosistema (sin borrar tus videos almacenados), basta con correr:
-
-  ```bash
-  curl -fsSL https://raw.githubusercontent.com/pepitozoe79-lgtm/MyMediaServer/main/uninstall.sh | sudo bash
-  ```
-
-  ---
-
-  ## 📂 Arquitectura del Proyecto-v2.0.0
-
-  [![Security](https://img.shields.io/badge/Security-JWT_|_Path_Traversal_Protected-green.svg?style=for-the-badge)]()
-  [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED.svg?style=for-the-badge&logo=docker)]()
-  [![Node.js](https://img.shields.io/badge/Node.js-v20_LTS-339933.svg?style=for-the-badge&logo=nodedotjs)]()
+  **Curator** es un servidor multimedia moderno, premium y ultra-eficiente diseñado para ser el centro de entretenimiento definitivo en tu hogar.
 </div>
 
-<br>
+---
 
-Bienvenido a **Curator Media Server** (la reencarnación NodeJS de *GNU Free Player*), la evolución premium de tu cine en casa personal. Construido sobre Node.js, este proyecto no es solo un servidor de archivos; es una plataforma de streaming VOD (Video On Demand) completa con una de las interfaces más hermosas, seguras y robustas de la comunidad Open Source.
+## ✨ Características Principales
+
+### 🧠 Inteligencia y Metadatos
+- **Identificación Automática (TMDB):** Escaneo inteligente de películas y series con descarga automática de posters, fanart y sinopsis.
+- **Caché Inteligente:** Almacenamiento local de metadatos e imágenes para una carga instantánea y privacidad total.
+- **Identificación Manual:** Posibilidad de corregir o editar metadatos directamente desde la interfaz.
+
+### 🎬 Streaming de Próxima Generación
+- **Transcodificación HLS Dinámica:** Utiliza FFmpeg para convertir cualquier video (MKV, AVI, etc.) a un flujo adaptable compatible con cualquier navegador.
+- **FFmpeg Portable Integrado:** El servidor configura su propio motor de video sin dependencias externas complicadas.
+- **Continuar Viendo:** Sincronización exacta del progreso de reproducción entre todos tus dispositivos.
+
+### 👥 Perfiles y Seguridad "Pro"
+- **Multi-perfiles:** Crea perfiles individuales para cada miembro de la familia al estilo Netflix.
+- **Seguridad por PIN:** Protege perfiles específicos con códigos de 4 dígitos.
+- **Hardening de Seguridad:** Protección activa contra ataques de fuerza bruta (bloqueo automático de IPs) y cifrado JWT.
+
+### 📺 TV en Vivo, DVR y Plugins
+- **IPTV con Guía EPG:** Soporte para listas M3U y guías XMLTV para ver la programación en tiempo real.
+- **Grabador DVR:** Graba tus programas favoritos de la televisión en vivo directamente a tu biblioteca.
+- **Ecosistema de Plugins:** Amplía las funciones del servidor soltando scripts en la carpeta `/plugins`.
+
+### 📱 Experiencia Multi-plataforma
+- **PWA (Progressive Web App):** Instala Curator en tu Android, iOS o Windows como una aplicación nativa.
+- **Diseño Glassmorphism:** Interfaz ultra-moderna con efectos de desenfoque y fondos reactivos.
 
 ---
 
-## ✨ Novedades Recientes (Lo nuevo en esta versión)
+## 🚀 Instalación Rápida
 
-Hemos migrado del antiguo núcleo C# a una arquitectura **Node.js ultra-rápida y ligera**, resolviendo múltiples errores reportados por la comunidad:
-1. **🛠️ Instalador Automático Estilo CasaOS:** Ya no necesitas instalar .NET ni lidiar con dependencias complejas. Un solo comando lo instala todo.
-2. **🔑 Cambio de Contraseñas Activo:** A petición popular, hemos añadido el botón de *Cambiar Contraseña* directamente en el panel de usuario. Tu cuenta `admin` puede modificar su clave con 2 clics para mantener la seguridad.
-3. **📁 Subida de Archivos Masivos Optimizada:** Se corrigieron los errores de subida (Upload). El backend ahora admite *streaming de subidas de hasta 10GB* utilizando el protocolo `multipart/form-data` e integrando Headers `Authorization: Bearer` con JWT sin cortes.
-4. **🔌 Desinstalador Universal:** Si te equivocaste de servidor o quieres limpiar todo, añadimos un script de `uninstall.sh` súper seguro que limpia el daemon sin borrar tus películas.
+Para instalar el ecosistema completo en Linux (Ubuntu/Debian):
 
----
-
-## 🌟 ¿Qué lo hace tan especial?
-
-### 🛡️ Seguridad de Grado Empresarial (Enterprise Security)
-* **Autenticación JWT:** Olvídate del viejo sistema de Cookies poco seguras. Todas las rutas usan JSON Web Tokens.
-* **Tolerancia a Path Traversal:** Protege completamente tu servidor impidiendo que usuarios escapen de la carpeta `/media`.
-* **File Locking:** Previene la corrupción de tu lista de `users.json` al tratar de cambiar contraseñas simultáneamente.
-
-### 🎨 Experiencia "Curator" Premium (Glassmorphism)
-Interfaz rediseñada desde cero inspirada en las principales plataformas de VOD.
-* Estética oscura "Glassmorphism" con fondos reactivos que toman el color de tus pósters.
-* Reproductor de video que guarda automáticamente progreso en **Continue Watching**.
-
-### 🛰️ Live IPTV Integrado
-Soporte absoluto para listas M3U / M3U8. Pega tu link de IPTV y el sistema extraerá automáticamente el logo del canal y su título para mostrarlo gráficamente.
-
----
-
-## 💻 Entorno de Desarrollo Manual
-
-Si eres desarrollador o quieres correrlo en Windows/MacOS en lugar de un servidor Ubuntu:
-
-1. Clona el proyecto
-```powershell
-git clone https://github.com/pepitozoe79-lgtm/MyMediaServer.git
-cd MyMediaServer
-```
-2. Instala dependencias y corre el servidor local:
-```powershell
+```bash
+# Instalación automática (Próximamente disponible vía script)
+git clone https://github.com/elpato001/clon.git
+cd clon
 npm install
-npm start
+```
+
+### Configuración Inicial
+1. Crea un archivo `.env` basado en `.env.example`.
+2. Añade tu `TMDB_API_KEY` para activar la identificación automática.
+3. Inicia el servidor: `npm start`.
+
+---
+
+## 💻 Comandos de Administración
+
+| Acción | Comando |
+| :--- | :--- |
+| **Iniciar Servidor** | `npm start` |
+| **Modo Desarrollo** | `npm run dev` |
+| **Limpiar Caché Transcode** | `rm -rf media/.transcode/*` |
+| **Reiniciar DB** | `rm database.db` (Cuidado: borra usuarios y progreso) |
+
+---
+
+## 🗑️ Desinstalación
+
+Para eliminar el servidor del sistema (manteniendo tus archivos multimedia intactos):
+
+```bash
+# Si usaste la instalación manual
+rm -rf /ruta/a/clon
 ```
 
 ---
 
-## 📂 Arquitectura Interna y Organización
-El servidor generará automáticamente su estructura local de carpetas en cuanto inicie:
+## 📂 Estructura del Proyecto
 
 ```text
-/opt/mymediaserver/
-├── media/           🎬 (Tus películas y subcarpetas van aquí)
-├── public/          🎨 (Frontend Vanilla JS/CSS interactivo)
-├── server.js        🧠 (Core protegido por JWT)
-├── users.json       🔐 (Base de datos Autogenerada de cuentas)
-└── iptv.json        📺 (Configuración de IPTV guardada)
+/
+├── bin/              📦 (Binarios de FFmpeg)
+├── media/            🎬 (Tus películas, series y música)
+│   ├── .cache/       🖼️ (Posters y backdrops cacheados)
+│   └── .transcode/   🎞️ (Segmentos temporales de streaming)
+├── plugins/          🔌 (Extensiones del sistema)
+├── public/           🎨 (Frontend PWA y assets)
+├── server.js         🧠 (Núcleo de la API y Seguridad)
+└── database.db       🗄️ (Base de datos SQLite)
 ```
-
-💡 **Tip de Portadas:** ¿Quieres darle elegancia a tu biblioteca? Coloca cualquier imagen JPG con el nombre `poster.jpg` dentro de la subcarpeta local de una película y el servidor la usará inteligentemente en lugar del póster genérico.
 
 ---
 
-## 🦆 Agradecimientos y Mención Honorífica
+## 🦆 Agradecimientos
 
-Quiero hacer una mención honorífica y un agradecimiento muy especial a mi maestro, **[@elpato001](https://github.com/elpato001)**. Gracias a sus conocimientos transmitidos, su dedicación y sus enseñanzas a lo largo de este camino, la evolución de este proyecto y mis habilidades como desarrollador han llegado a un nuevo y extraordinario nivel. ¡Gracias eternas, maestro!
+Este proyecto es la culminación de un proceso de aprendizaje intenso y apasionado. Un agradecimiento especial al maestro **[@elpato001](https://github.com/elpato001)** por su guía y enseñanzas que permitieron elevar este código a un nivel premium.
 
+---
 
-**Hecho con ❤️ para la comunidad Open Source y Home Servers.**
+**Hecho con ❤️ para la comunidad de Home Servers.**
