@@ -50,6 +50,14 @@
   curl -fsSL https://raw.githubusercontent.com/elpato001/clon/main/install.sh | sudo bash
   ```
 
+  ### 🪟 Instalación en Windows (PowerShell)
+
+  Abre una terminal de PowerShell como administrador y pega:
+
+  ```powershell
+  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/elpato001/clon/main/install.ps1'))
+  ```
+
   Una vez que termine, el servidor estará corriendo como un servicio de fondo. ¡Así de fácil!
 
 ### Configuración Inicial
