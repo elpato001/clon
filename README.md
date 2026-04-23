@@ -42,16 +42,15 @@
 
 ---
 
-## 🚀 Instalación Rápida
+## 🚀 Instalación Automática (One-Liner)
 
-Para instalar el ecosistema completo en Linux (Ubuntu/Debian):
+  Instala, configura y levanta el servidor completo con un solo comando en tu terminal de Linux:
 
-```bash
-# Instalación automática (Próximamente disponible vía script)
-git clone https://github.com/elpato001/clon.git
-cd clon
-npm install
-```
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/elpato001/clon/main/install.sh | sudo bash
+  ```
+
+  Una vez que termine, el servidor estará corriendo como un servicio de fondo. ¡Así de fácil!
 
 ### Configuración Inicial
 1. Crea un archivo `.env` basado en `.env.example`.
@@ -71,14 +70,13 @@ npm install
 
 ---
 
-## 🗑️ Desinstalación
+  ## 🗑️ Desinstalación Rápida
 
-Para eliminar el servidor del sistema (manteniendo tus archivos multimedia intactos):
+  Si alguna vez decides remover el servicio (sin borrar tus videos), basta con correr:
 
-```bash
-# Si usaste la instalación manual
-rm -rf /ruta/a/clon
-```
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/elpato001/clon/main/uninstall.sh | sudo bash
+  ```
 
 ---
 
