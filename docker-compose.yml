@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mymediaserver:
+    build: .
+    container_name: mymediaserver
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./media:/app/media
+      - ./users.json:/app/users.json
+      - ./iptv.json:/app/iptv.json
+      - ./.env:/app/.env
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET:-super-secret-key-2024}
+      - PORT=3000
+
+  nginx:
+    image: nginx:alpine
+    container_name: mymedia-nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - mymediaserver
+    restart: unless-stopped

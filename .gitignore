@@ -1,0 +1,13 @@
+node_modules/
+.env
+database.db
+database.db-wal
+database.db-shm
+media/.cache/
+media/.transcode/
+media/.epg.json
+bin/
+*.log
+iptv.json
+iptv.json.bak
+users.json.bak

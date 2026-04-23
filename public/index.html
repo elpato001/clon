@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curator - Premium Media Server</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="MyMediaServer - Your premium personal cloud media server. Stream movies, TV shows, music and Live TV with ease.">
+    <meta name="keywords" content="media server, streaming, IPTV, cloud storage, movies, series">
+    <meta name="author" content="Antigravity AI">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#5b8cff">
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-bg"></div>
+        <div class="login-box">
+            <h1 class="logo-display">CURATOR</h1>
+            <p>Welcome back. Please sign in to access your media.</p>
+            
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="loginUser" placeholder="Username" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="loginPass" placeholder="Password" required>
+            </div>
+            
+            <div id="loginError" style="color: #ff4d4d; margin-bottom: 1rem; font-size: 0.9rem;"></div>
+            
+            <button class="btn-login" onclick="doLogin()">Sign In</button>
+        </div>
+    </div>
+    
+    <!-- Profile Selection Screen -->
+    <div id="profileScreen" class="login-screen hidden" style="background: #0a0a0a;">
+        <div class="profile-selection-container">
+            <h1 style="font-size: 2.5rem; margin-bottom: 3rem;">¿Quién está viendo ahora?</h1>
+            <div id="profileGrid" class="profile-grid">
+                <!-- Profiles injected here -->
+                <div class="profile-item add-profile" onclick="showAddProfile()">
+                    <div class="profile-avatar"><i class="fas fa-plus"></i></div>
+                    <div class="profile-name">Añadir perfil</div>
+                </div>
+            </div>
+            <button class="btn-main secondary" style="margin-top: 4rem;" onclick="logout()">Cambiar de cuenta</button>
+        </div>
+    </div>
+
+    <!-- PIN Modal -->
+    <div id="pinModal" class="modal-player hidden" style="z-index: 60000; justify-content: center; align-items: center;">
+        <div class="glass-panel" style="width: 300px; text-align: center; padding: 2rem;">
+            <h3>Introduce tu PIN</h3>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; margin: 1.5rem 0;">
+                <input type="password" id="pinInput" maxlength="4" style="width: 150px; text-align: center; font-size: 2rem; letter-spacing: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn-action blue" style="flex: 1;" id="pinSubmitBtn">Entrar</button>
+                <button class="btn-action red" style="flex: 1;" onclick="document.getElementById('pinModal').classList.add('hidden')">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="appContainer" class="app-container hidden">
+        
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="side-logo">C</div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" id="navHome" onclick="showHome()" title="Home">
+                    <i class="fas fa-home"></i>
+                </li>
+                <li class="nav-item" id="navMovies" onclick="loadCategory('Peliculas')" title="Movies">
+                    <i class="fas fa-film"></i>
+                </li>
+                <li class="nav-item" id="navSeries" onclick="loadCategory('Series')" title="TV Shows">
+                    <i class="fas fa-tv"></i>
+                </li>
+                <li class="nav-item" id="navMusic" onclick="loadCategory('Musica')" title="Music">
+                    <i class="fas fa-music"></i>
+                </li>
+                <li class="nav-item" id="navIPTV" onclick="showIPTV()" title="Live TV">
+                    <i class="fas fa-broadcast-tower"></i>
+                </li>
+                <li class="nav-item" id="navFiles" onclick="toggleView()" title="File Explorer">
+                    <i class="fas fa-folder-open"></i>
+                </li>
+            </ul>
+            
+            <div class="nav-footer">
+                <li class="nav-item" id="navAdmin" onclick="showAdmin()" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </li>
+                <li class="nav-item" onclick="logout()" title="Logout" style="margin-top: 1.5rem;">
+                    <i class="fas fa-sign-out-alt"></i>
+                </li>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="mainScroll">
+            
+            <!-- Topbar (Flotante) -->
+            <header class="topbar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search your library..." onkeyup="searchMedia()">
+                </div>
+                
+                <div class="user-info" style="position: relative;">
+                    <input type="file" id="globalFileInput" multiple style="display: none;" onchange="uploadGlobalFile()">
+                    <button class="btn-action primary" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); padding: 0.6rem 1.2rem; font-size: 0.9rem;" onclick="document.getElementById('globalFileInput').click()">
+                        <i class="fas fa-cloud-upload-alt"></i> Subir Medios
+                    </button>
+                    
+                    <div id="userProfileBtn" onclick="document.getElementById('userDropdown').classList.toggle('hidden')" style="display: flex; align-items: center; gap: 1rem; cursor: pointer; padding: 0.3rem 0.5rem; border-radius: 20px; transition: background 0.3s; margin-left: 10px;">
+                        <span id="currentUserText" style="font-weight: 500;">User</span>
+                        <div class="avatar" id="userAvatar">A</div>
+                    </div>
+                    
+                    <div id="userDropdown" class="hidden glass-panel" style="position: absolute; top: 70px; right: 0; padding: 1rem; width: 230px; z-index: 1000; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+                        <button class="btn-action primary" style="width: 100%; border-radius: 8px; justify-content: flex-start; background: transparent; color: white; padding: 0.6rem;" onclick="loadProfilesGrid(); document.getElementById('userDropdown').classList.add('hidden'); appContainer.classList.add('hidden');">
+                            <i class="fas fa-users"></i> Cambiar Perfil
+                        </button>
+                        <button class="btn-action primary" style="width: 100%; border-radius: 8px; justify-content: flex-start; background: transparent; color: white; padding: 0.6rem;" onclick="changePassword()">
+                            <i class="fas fa-key"></i> Cambiar Contraseña
+                        </button>
+                        <button class="btn-action primary" style="width: 100%; border-radius: 8px; justify-content: flex-start; background: transparent; color: white; padding: 0.6rem;" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                        <div id="adminDropdownOptions" class="hidden" style="display: flex; flex-direction: column; gap: 0.5rem; border-top: 1px solid var(--glass-border); padding-top: 0.5rem; margin-top: 0.5rem;">
+                            <button class="btn-action primary" style="width: 100%; border-radius: 8px; justify-content: flex-start; background: transparent; color: #ffc107; padding: 0.6rem;" onclick="rebootServerMenu()">
+                                <i class="fas fa-sync-alt"></i> Reiniciar Servidor
+                            </button>
+                            <button class="btn-action primary" style="width: 100%; border-radius: 8px; justify-content: flex-start; background: transparent; color: #ff4d4d; padding: 0.6rem;" onclick="poweroffServerMenu()">
+                                <i class="fas fa-power-off"></i> Apagar Servidor
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Hero Section (Dynamic) -->
+            <section id="heroSection" class="hero">
+                <div class="hero-bg" id="heroBg"></div>
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="hero-tag" id="heroTag">Featured</span>
+                    <h1 class="hero-title" id="heroTitle">Curated for You</h1>
+                    <div class="hero-meta">
+                        <span class="rating"><i class="fas fa-star"></i> 4.9</span>
+                        <span>2024</span>
+                        <span>4K Ultra HD</span>
+                    </div>
+                    <p class="hero-desc" id="heroDesc">
+                        Access your personal media library from any device. High quality streaming, automated posters, and seamless IPTV integration.
+                    </p>
+                    <div class="hero-btns">
+                        <button class="btn-main primary" id="heroPlayBtn">
+                            <i class="fas fa-play"></i> Play Now
+                        </button>
+                        <button class="btn-main secondary">
+                            <i class="fas fa-plus"></i> Add to List
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dynamic Content Area -->
+            <div class="content-wrapper">
+                
+                <!-- Breadcrumbs (for folder navigation) -->
+                <div id="breadcrumbs" style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.9rem; display: flex; gap: 0.5rem; align-items: center;"></div>
+
+                <!-- Continue Watching (Functional) -->
+                <section class="section" id="continueWatchingSection">
+                    <div class="section-header">
+                        <h2 class="section-title">Continue Watching</h2>
+                        <a href="#" class="btn-view-all">View All</a>
+                    </div>
+                    <div class="media-row" id="continueGrid">
+                        <!-- Cards injected here -->
+                    </div>
+                </section>
+
+                <!-- General Grid (Peliculas, Recently Added, etc.) -->
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title" id="libraryTitle">Recently Added</h2>
+                    </div>
+                    <div class="media-row" id="mediaGrid">
+                        <!-- Cards injected here -->
+                    </div>
+                </section>
+
+                <!-- File Manager Section (Hidden by default) -->
+                <div id="fileManager" class="glass-panel hidden" style="margin-top: 100px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>File Explorer</h2>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="file" id="fileInput" multiple style="display: none;" onchange="uploadFile()">
+                            <button class="btn-action blue" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-upload"></i> Upload
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Upload Progress -->
+                    <div id="uploadProgressContainer" class="hidden" style="margin-top: 1.5rem; padding: 1.5rem; background: var(--glass); border-radius: 12px; border: 1px solid var(--glass-border);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span id="uploadStatusText">Uploading...</span>
+                            <span id="uploadPercentageText">0%</span>
+                        </div>
+                        <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                            <div id="uploadProgressBar" style="width: 0%; height: 100%; background: var(--accent-blue); transition: width 0.3s;"></div>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fileListBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Admin Panel Section (Hidden by default) -->
+                <div id="adminPanel" class="glass-panel hidden" style="margin-top: 100px;">
+                    <h2>Admin Control Panel</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2rem;">
+                        <div>
+                            <h3>User Management</h3>
+                            <ul id="usersList" style="list-style: none; padding: 0; margin-top: 1rem;"></ul>
+                            <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.8rem;">
+                                <input type="text" id="newUsername" placeholder="Nombre de usuario" style="padding: 1rem; border-radius: 12px; background: var(--glass); border: 1px solid var(--glass-border); color: white;">
+                                <input type="text" id="newName" placeholder="Nombre para mostrar" style="padding: 1rem; border-radius: 12px; background: var(--glass); border: 1px solid var(--glass-border); color: white;">
+                                <input type="password" id="newPassword" placeholder="Contraseña" style="padding: 1rem; border-radius: 12px; background: var(--glass); border: 1px solid var(--glass-border); color: white;">
+                                <select id="newRole" style="padding: 1rem; border-radius: 12px; background: var(--glass); border: 1px solid var(--glass-border); color: white;">
+                                    <option value="user" style="color: black;">Usuario Normal</option>
+                                    <option value="admin" style="color: black;">Administrador</option>
+                                </select>
+                                <button class="btn-action blue" onclick="createUser()">Craer Usuario</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>System Maintenance</h3>
+                            <button class="btn-action blue" style="width: 100%; margin-bottom: 1rem;" onclick="updateServer()">
+                                <i class="fas fa-sync"></i> Update Server Code
+                            </button>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">
+                                Note: This will execute the update script to sync with the latest GitHub release.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IPTV Section (Hidden by default) -->
+                <div id="iptvSection" class="glass-panel hidden" style="margin-top: 100px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+                        <h2>Live TV Channels</h2>
+                        <div style="display: flex; gap: 1rem; flex: 1; max-width: 800px; justify-content: flex-end; flex-direction: column;">
+                            <div style="display: flex; gap: 1rem;">
+                                <input type="text" id="iptvUrl" placeholder="URL M3U..." style="flex: 1; padding: 0.8rem; border-radius: 12px; background: var(--glass); border: 1px solid var(--glass-border); color: white;">
+                                <input type="text" id="iptvEpgUrl" placeholder="URL Guía XMLTV (EPG)..." style="flex: 1; padding: 0.8rem; border-radius: 12px; background: var(--glass); border: 1px solid var(--glass-border); color: white;">
+                            </div>
+                            <button class="btn-action blue" onclick="configIPTV()"><i class="fas fa-save"></i> Guardar Configuración</button>
+                        </div>
+                    </div>
+                    <div class="media-row" id="iptvGrid" style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.5rem;">
+                        <!-- Channels here -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div id="playerModal" class="modal-player">
+        <div class="player-header">
+            <h2 id="currentVideoTitle">Video Title</h2>
+            <div class="close-player" onclick="closePlayer()">&times;</div>
+        </div>
+        <video id="videoPlayer" controls>
+            <source id="videoSource" src="" type="video/mp4">
+            <track id="subtitleTrack" label="English" kind="subtitles" srclang="en" src="" default>
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Global Upload Toast -->
+    <div id="toastUpload" class="hidden" style="position: fixed; bottom: 30px; right: 30px; background: rgba(10,10,10,0.9); border: 1px solid var(--accent-blue); padding: 20px; border-radius: 16px; z-index: 50000; width: 300px; backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+        <div style="display:flex; justify-content: space-between; margin-bottom: 10px;">
+            <span id="toastUploadText" style="font-weight: 600;">Subiendo...</span>
+            <span id="toastUploadPct" style="color: var(--accent-blue);">0%</span>
+        </div>
+        <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+            <div id="toastUploadBar" style="width: 0%; height: 100%; background: var(--accent-blue); transition: width 0.3s;"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="script.js?v=2.1"></script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+{
+    "name": "Curator Premium Media Server",
+    "short_name": "Curator",
+    "description": "Your premium personal cloud media server.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#050505",
+    "theme_color": "#5b8cff",
+    "icons": [
+        {
+            "src": "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=192&h=192&auto=format&fit=crop",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=512&h=512&auto=format&fit=crop",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
